@@ -1,0 +1,549 @@
+﻿function checkDate(ddlDay, ddlMonth, ddlYear) {
+
+    var d = document.getElementById(ddlDay).value;
+    var m = document.getElementById(ddlMonth).value;
+    var y = document.getElementById(ddlYear).value;
+
+    var tempDate = new Date();
+    var tempDate = new Date();
+    var curr_year = tempDate.getFullYear();
+
+    var yl = 1900; // least year to consider
+    var ym = curr_year; // most year to consider
+    var flag = true;
+
+    if (m < 1 || m > 12) flag = false;
+    if (d < 1 || d > 31) flag = false;
+    if (y < yl || y > ym) flag = false;
+    if (m == 4 || m == 6 || m == 9 || m == 11)
+        if (d == 31) flag = false;
+    if (m == 2) {
+        var b = parseInt(y / 4);
+        if (isNaN(b)) flag = false;
+        if (d > 29) flag = false;
+        if (d == 29 && ((y / 4) != parseInt(y / 4))) flag = false;
+    }
+
+    if (flag) {
+        return (true);
+    }
+    else {
+        return (false);
+    }
+
+    return (true);
+}
+function checkEmail(str) {
+    var IsValid = /^([a-zA-Z0-9_.-])+@([a-zA-Z0-9_.-])+\.([a-zA-Z])+([a-zA-Z])+/;
+    if (!IsValid.test(str)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+function checkNumber(str) {
+    var IsPhoneValid = /^\d{10}$/;
+
+    if (IsPhoneValid.test(str)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+function MyCheckWithoutControlID(MyStr) {
+    var MyDiv = document.getElementById("MyCounter");
+    if (MyDiv == null) {
+        var MyDivpop = window.opener.document.getElementById("MyCounter");
+        MyDiv = MyDivpop;
+
+    }
+    var StringT = new String(MyStr);
+    var splitString = StringT.split("||");
+    MyDiv.innerHTML = parseInt(splitString[0]);
+    return splitString[0];
+}
+$("#view_basket").on("click, mouseover",
+    function () {
+        BindSideCart();
+    });
+function BindSideCart() {
+    var c = $("#hdnSiteURL").val();
+    var b = "#dvArea";
+    var d = new Date().getTime();
+    var a = c + "/SidebarCart.aspx?r=" +
+        d;
+    $.get(a, null, function (e) {
+        $(b).html(e)
+    })
+}
+$('body').on('click', '.quick-view a.heart', function () {
+
+    var SiteURL = $("#hdnSiteURL").val();
+
+    var hdnProductID = $(this).parent().find("#hdnProductID");
+    var hdnProductPrice = $(this).parent().find("#hdnProductPrice");
+
+    if ($("#hdnUserID").val() != "") {
+        AddtoWishlist(hdnProductID.val(), hdnProductPrice.val(), "1");
+    }
+    else {
+        var popup = $find('mdlMessage');
+        $("#lblMessage").text('Please login to add the product in your wishlist.');
+        popup.show();
+        setTimeout(function () {
+            popup.hide(0);
+            location.href = SiteURL + "/LoginRegister";
+        }, 2000);
+
+        return false;
+    }
+});
+
+$('body').on('click', '.quick-view a.compare', function () {
+
+    var SiteURL = $("#hdnSiteURL").val();
+
+    var hdnParentProductID = $(this).parent().find("#hdnParentProductID");
+    var hdnProductID = $(this).parent().find("#hdnProductID");
+
+    AddtoCompareList(hdnParentProductID.val(), hdnProductID.val());
+});
+function Cart_AddProduct(itemid, price, qty, pricingUnit, MinQtyPerUnit, action) {
+   
+    var IsSelected = true;
+
+    var SiteURL = $("#hdnSiteURL").val();
+    var vid = $("#hdnVariationID").val();
+
+    var popup = $find('mdlMessage');
+
+    $(".variationvalues").each(function () {
+        if ($(this).val() < 0) {
+            IsSelected = false;
+        } 
+    });
+    if (IsSelected) {
+        if (action == "add") {
+            Url = SiteURL + "/getCart.aspx?itemid=" + itemid + "&qty=" + qty + "&price=" + price + "&pu=" + pricingUnit + "&qtypu=" + MinQtyPerUnit + "&vid=" + vid + "&fun=add";
+        }
+        else if (action == "remove") {
+            Url = SiteURL + "/getCart.aspx?itemid=" + itemid + "&qnty=0" + "&fun=remove";
+        }
+
+        $.ajax({
+            url: Url, // Location of the service
+            success: function (result) {//On Successful service call
+                if (result == "invalid") {
+                    $("#lblMessage").text('Invalid product price.');
+                    popup.show();
+                    setTimeout(function () {
+                        popup.hide(0);
+                    }, 2000);
+                }
+                else if (qty > 0 && result == "false") {
+                    $("#lblMessage").text('Product already added to basket.');
+                    popup.show();
+                    setTimeout(function () {
+                        popup.hide(0);
+                    }, 2000);
+                }
+                else if (result == "error") {
+                    $("#lblMessage").text('Oops! An error occurred. Please try again later.');
+                    popup.show();
+                    setTimeout(function () {
+                        popup.hide(0);
+                    }, 2000);
+                }
+                else {
+                    if (qty > 0) {
+                        $("#lblMessage").text('Product added successfully to basket.');
+                        popup.show();
+                        setTimeout(function () {
+                            popup.hide(0);
+                        }, 2000);
+
+                        MyCheckWithoutControlID(result);
+                        BindSideCart();
+                    }
+                    else {
+
+                        $("#lblMessage").text('Product removed successfully from basket.');
+
+                        popup.show();
+                        setTimeout(function () {
+                            popup.hide(0);
+
+                        }, 2000);
+                        MyCheckWithoutControlID(result);
+                        BindSideCart();
+                    }
+                }
+            },
+            error: function (data, status) {
+                alert(data.status);
+                alert(data.responseText);
+            }
+        });
+    }
+    else {
+        $("#lblMessage").text('Oops! you have not selected the variations.');
+        popup.show();
+        setTimeout(function () {
+            popup.hide(0);
+        }, 2000);
+    }
+    return false;
+}
+function Cart_AddAndBuy(itemid, price, qty, pricingUnit, MinQtyPerUnit, action) {
+
+    var IsSelected = true;
+
+    var SiteURL = $("#hdnSiteURL").val();
+    var vid = $("#hdnVariationID").val();
+
+    var popup = $find('mdlMessage');
+
+    $(".variationvalues").each(function () {
+        if ($(this).val() < 0) {
+            IsSelected = false;
+        }
+    });
+    if (IsSelected) {
+        if (action == "add") {
+            Url = SiteURL + "/getCart.aspx?itemid=" + itemid + "&qty=" + qty + "&price=" + price + "&pu=" + pricingUnit + "&qtypu=" + MinQtyPerUnit + "&vid=" + vid + "&fun=add";
+        }
+        else if (action == "remove") {
+            Url = SiteURL + "/getCart.aspx?itemid=" + itemid + "&qnty=0" + "&fun=remove";
+        }
+
+        $.ajax({
+            url: Url, // Location of the service
+            success: function (result) {//On Successful service call
+                if (result == "invalid") {
+                    $("#lblMessage").text('Invalid product price.');
+                    popup.show();
+                    setTimeout(function () {
+                        popup.hide(0);
+                    }, 2000);
+                }
+                else if (qty > 0 && result == "false") {
+                    location.href = SiteURL + "/Checkout";
+                }
+                else if (result == "error") {
+                    $("#lblMessage").text('Oops! An error occurred. Please try again later.');
+                    popup.show();
+                    setTimeout(function () {
+                        popup.hide(0);
+                    }, 2000);
+                }
+                else {
+                    if (qty > 0) {
+                        MyCheckWithoutControlID(result);
+                        BindSideCart();
+                        location.href = SiteURL + "/Checkout";
+                    }
+                    else {
+                        MyCheckWithoutControlID(result);
+                        BindSideCart();
+
+                        var MyDiv = document.getElementById("MyCounter");
+                        if (MyDiv == null) {
+                            var MyDivpop = window.opener.document.getElementById("MyCounter");
+                            MyDiv = MyDivpop;
+
+                        }
+                        if (parseInt(MyDiv.innerHTML) > 0) {
+                            location.href = SiteURL + "/Checkout";
+                        }
+                        else {
+                            $("#lblMessage").text('Your basket is empty, please select any quantity and try again.');
+                            popup.show();
+                            setTimeout(function () {
+                                popup.hide(0);
+                            }, 2000);
+                        }
+                    }
+                }
+            },
+            error: function (data, status) {
+                alert(data.status);
+                alert(data.responseText);
+            }
+        });
+    }
+    else {
+        $("#lblMessage").text('Oops! you have not selected the variations.');
+        popup.show();
+        setTimeout(function () {
+            popup.hide(0);
+        }, 2000);
+    }
+    return false;
+}
+function AddtoWishlist(itemid, price, qty, pricingUnit, MinQtyPerUnit) {
+    
+    var SiteURL = $("#hdnSiteURL").val();
+    var vid = "";
+    var IsSelected = true;
+    try {
+        vid = $("#hdnVariationID").val();
+    }
+    catch (e) { }
+    var popup = $find('mdlMessage');
+
+    Url = SiteURL + "/getCart.aspx?itemid=" + itemid + "&qty=" + qty + "&price=" + price + "&pu=" + pricingUnit + "&qtypu=" + MinQtyPerUnit + "&vid=" + vid + "&fun=addtowishlist";
+
+    $.ajax({
+        url: Url, // Location of the service
+        success: function (result) {//On Successful service call
+            if (result == "exists") {
+                $("#lblMessage").text('Product already exists in wishlist.');
+                popup.show();
+                setTimeout(function () {
+                    popup.hide(0);
+                }, 2000);
+            }
+            else if (result == "error") {
+                $("#lblMessage").text('Oops! An error occurred. Please try again later.');
+                popup.show();
+                setTimeout(function () {
+                    popup.hide(0);
+                }, 2000);
+            }
+            else {
+                $("#lblMessage").text('Product added successfully to wishlist.');
+                popup.show();
+                setTimeout(function () {
+                    popup.hide(0);
+                }, 2000);
+            }
+        },
+        error: function (data, status) {
+            alert(data.status);
+            alert(data.responseText);
+        }
+    });
+    return false;
+}
+function WishlisttoCart(cartid, itemid, price, qty, pricingUnit, MinQtyPerUnit) {
+
+   
+    var SiteURL = $("#hdnSiteURL").val();
+
+    var popup = $find('mdlMessage');
+
+    if (qty > 0) {
+
+        Url = SiteURL + "/getCart.aspx?itemid=" + itemid + "&cartid=" + cartid + "&qty=" + qty + "&price=" + price + "&pu=" + pricingUnit + "&qtypu=" + MinQtyPerUnit + "&fun=wishlisttocart";
+
+        $.ajax({
+            url: Url, // Location of the service
+            success: function (result) {//On Successful service call
+                if (result == "error") {
+                    $("#lblMessage").text('Oops! An error occurred. Please try again later.');
+                    popup.show();
+                    setTimeout(function () {
+                        popup.hide(0);
+                    }, 2000);
+                }
+                else {
+                    $("#lblMessage").text('Product added successfully to basket.');
+                    popup.show();
+                    setTimeout(function () {
+                        popup.hide(0);
+                    }, 2000);
+
+                    MyCheckWithoutControlID(result);
+                    BindSideCart();
+                    location.href = SiteURL + "/MyWishlist";
+                }
+            },
+            error: function (data, status) {
+                alert(data.status);
+                alert(data.responseText);
+            }
+        });
+    }
+    else {
+        $("#lblMessage").text('Oops! This product is out of stock.');
+        popup.show();
+        setTimeout(function () {
+            popup.hide(0);
+        }, 2000);
+    }
+    return false;
+}
+function AddtoCompareList(pid, id) {
+
+    var SiteURL = $("#hdnSiteURL").val();
+    var popup = $find('mdlMessage');
+
+    Url = SiteURL + "/getCart.aspx?pid=" + pid + "&id=" + id;
+
+    $.ajax({
+        url: Url, // Location of the service
+        success: function (result) {//On Successful service call
+            if (result == "limitexceed") {
+                $("#lblMessage").html('You can add only 3 products to compare list. <br><br> <a class="button" href="' + SiteURL + '/Compare">View Compare List</a>');
+                popup.show();
+                setTimeout(function () {
+                    popup.hide(0);
+                }, 5000);
+            }
+            else if (result == "exists") {
+                $("#lblMessage").html('You have already added this product to compare list. <br><br> <a class="button" href="' + SiteURL + '/Compare">View Compare List</a>');
+                popup.show();
+                setTimeout(function () {
+                    popup.hide(0);
+                }, 5000);
+            }
+            else if (result == "invalidproduct") {
+                $("#lblMessage").html('You can add products of same type to compare list. This product is not matching with the existing product(s). <br><br> <a class="button" href="' + SiteURL + '/Compare">View Compare List</a>');
+                popup.show();
+            }
+            else {
+                $("#lblMessage").html('Product added successfully to compare list. <br><br> <a class="button" href="' + SiteURL + '/Compare">View Compare List</a>');
+                popup.show();
+                setTimeout(function () {
+                    popup.hide(0);
+                }, 5000);
+            }
+        },
+        error: function (data, status) {
+            alert(data.status);
+            alert(data.responseText);
+        }
+    });
+    return false;
+}
+function DeleteFromCompareList(id) {
+
+    var SiteURL = $("#hdnSiteURL").val();
+    var popup = $find('mdlMessage');
+
+    Url = SiteURL + "/getCart.aspx?id=" + id;
+
+    $.ajax({
+        url: Url, // Location of the service
+        success: function (result) {//On Successful service call
+            if (result == "deleted") {
+                $("#lblMessage").text('Product deleted successfully.');
+                popup.show();
+                setTimeout(function () {
+                    popup.hide(0);
+                }, 2000);
+                location.href = SiteURL + "/Compare";
+            }
+            else if (result == "error") {
+                $("#lblMessage").text('Oops! An error occurred. Please try again later.');
+                popup.show();
+                setTimeout(function () {
+                    popup.hide(0);
+                }, 2000);
+            }
+        }
+    });
+    return false;
+}
+
+$('#Product_select2').select2({
+    placeholder: "Select Product", minimumInputLength: 3,
+    ajax: {
+        url: '/AutoComplete.asmx/GetAllProductForRequest',
+        dataType: 'json',
+        delay: 500,
+        data: function (params, page) {
+            return {
+                //select location_description,location_number  from oisms_functional_location  where  upper(location_number) like upper('%Q1-00-0-CO-CB-001%') enable(RETURN_TOP  10);
+                prefixText: params.term,
+                contextKey: 1
+            };
+        },
+        processResults: function (data) {
+            return {
+                results: $.map(data, function (obj) {
+                    return { id: obj.ProductID, text: obj.ProductName };
+                })
+            };
+        },
+        language: {
+            errorLoading: function () {
+                return "Searching..."
+            }
+        }
+    }
+});
+$('#btnPinCode').blur(function () {
+    $("#txtPinCode").attr("style", "border-color:#cccccc;");
+});
+
+$('#btnPinCode').click(function () {
+    var IsSelected = true;
+    var SiteURL = $("#hdnSiteURL").val();
+    var VendorID = $("#hdnVID").val();
+    var varPinCode = $("#txtPinCode").val();
+    if (varPinCode == "") {
+        $("#txtPinCode").attr("style", "border-color:red;");
+        focus($("#txtPinCode"));
+        return false;
+    } 
+    Url = SiteURL + "/ws/Delivery.aspx?pincode=" + varPinCode + " &VendorID=" + VendorID;
+    $.ajax({
+        url: Url, // Location of the service
+        success: function (result) {//On Successful service call
+            if (result == "invalid") {
+                $("#aDelivery").text("Please check delivery in your area!!");
+            }
+            else {
+                $("#aDelivery").text(result);
+            }
+            $('#modal-pincode').modal('hide')
+        },
+        error: function (data, status) {
+          //  alert(data.status);
+           // alert(data.responseText);
+        }
+    });
+    return false;
+});
+
+function validation() {
+    var flag = true;
+    $('.RequirementDetails input.validate').each(function () {
+        if ($(this).val() == "") {
+            $(this).attr("style", "border-color:red;")
+            flag = false;
+        }
+    });
+    $('.RequirementDetails .select2').each(function () {        
+        if ($(this).val()==null) {
+            $('.RequirementDetails .select2').find('.select2-selection--single').attr("style", "border-color:red;")
+            flag = false;
+        }
+    });
+
+    $('.RequirementDetails textarea.validate').each(function () {
+        if ($(this).val() == "") {
+            $(this).attr("style", "border-color:red;")
+            flag = false;
+        }
+    });
+    return flag;
+};
+
+$('.RequirementDetails input.validate').change(function () {
+    if ($(this).val() == "") {
+        $(this).attr("style", "border-color:red;")
+    }
+    else {
+        $(this).removeAttr("style")
+    }
+});
+
+$('.RequirementDetails .select2').on('select2:select', function (e) {$('#hdnProduct').val(e.params.data.id);$('.RequirementDetails .select2').find('.select2-selection').removeAttr("style")});
+$('.RequirementDetails textarea.validate').on('change', function () {$(this).removeAttr("style")});
+function uiScroller() {if ($(".scrollx").length > 0) {$(".scrollx").mCustomScrollbar({ axis: "x", autoHideScrollbar: false, scrollInertia: 20 });}if ($(".scroll").length > 0) {$(".scroll").mCustomScrollbar({ axis: "y", autoHideScrollbar: true, scrollInertia: 20, advanced: { autoScrollOnFocus: false } });}} 
+$(document).ready(function () { uiScroller(); var prm = Sys.WebForms.PageRequestManager.getInstance(); prm.add_endRequest(function () { uiScroller(); }); });
+$(document).ready(function () { $("a.magic").each(function () { $(this).click(function () { $(this).attr("data"); var popup = $find('mdlMsg'); $("#h4Title").html($(this).html()); $("#lblMsg").html($(this).attr("data")); popup.show();});});});   
