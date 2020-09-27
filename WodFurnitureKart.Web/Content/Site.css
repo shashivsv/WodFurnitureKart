@@ -307,7 +307,7 @@ textarea {
 
     .signup-form .form-group {
         margin-bottom: 20px;
-        margin-top:10px;
+        margin-top: 10px;
     }
 
     .signup-form input[type="checkbox"] {
@@ -347,15 +347,25 @@ textarea {
             text-decoration: underline;
         }
 
-        /*image size*/
-    div img{
-        width:250px;
-        height:250px;
-    }
-    #cart{
-        width:50px;
-        height:50px;
-    }
+/*image size*/
+div img {
+    width: 250px;
+    height: 250px;
+}
 
-    .box{background: #dcdcdc;padding: 15px; margin-top: 20px;}
+#cart {
+    width: 50px;
+    height: 50px;
+}
 
+.box {
+    background: #dcdcdc;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.mybutton {
+    color: #ffffff;
+    background-color: #428bca;
+    border-color: #357ebd;
+}

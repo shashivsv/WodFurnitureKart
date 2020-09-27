@@ -135,23 +135,35 @@
     <Compile Include="Areas\Admin\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Admin\Controllers\PageController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\KartController.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
+    <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\WodFurnitureKart.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WodFurnitureKart.Context.tt</DependentUpon>
+    <Compile Include="Models\tblPage.cs">
+      <DependentUpon>WooFurnitureKartDb.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\WodFurnitureKart.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WodFurnitureKart.tt</DependentUpon>
+    <Compile Include="Models\tblRole.cs">
+      <DependentUpon>WooFurnitureKartDb.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\WodFurnitureKart.Designer.cs">
+    <Compile Include="Models\tblUser.cs">
+      <DependentUpon>WooFurnitureKartDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WooFurnitureKartDb.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>WodFurnitureKart.edmx</DependentUpon>
+      <DependentUpon>WooFurnitureKartDb.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WooFurnitureKartDb.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WooFurnitureKartDb.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\WooFurnitureKartDb.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WooFurnitureKartDb.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\PageVM.cs" />
@@ -180,15 +192,15 @@
     <Content Include="images\logo.png" />
     <Content Include="images\one.jpg" />
     <Content Include="images\two.jpg" />
-    <Content Include="Models\WodFurnitureKart.Context.tt">
+    <Content Include="Models\WooFurnitureKartDb.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>WodFurnitureKart.edmx</DependentUpon>
-      <LastGenOutput>WodFurnitureKart.Context.cs</LastGenOutput>
+      <DependentUpon>WooFurnitureKartDb.edmx</DependentUpon>
+      <LastGenOutput>WooFurnitureKartDb.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\WodFurnitureKart.tt">
+    <Content Include="Models\WooFurnitureKartDb.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>WodFurnitureKart.edmx</DependentUpon>
-      <LastGenOutput>WodFurnitureKart.cs</LastGenOutput>
+      <DependentUpon>WooFurnitureKartDb.edmx</DependentUpon>
+      <LastGenOutput>WooFurnitureKartDb.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -197,12 +209,12 @@
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Admin\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Page\Index.cshtml" />
-    <EntityDeploy Include="Models\WodFurnitureKart.edmx">
+    <EntityDeploy Include="Models\WooFurnitureKartDb.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>WodFurnitureKart.Designer.cs</LastGenOutput>
+      <LastGenOutput>WooFurnitureKartDb.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\WodFurnitureKart.edmx.diagram">
-      <DependentUpon>WodFurnitureKart.edmx</DependentUpon>
+    <Content Include="Models\WooFurnitureKartDb.edmx.diagram">
+      <DependentUpon>WooFurnitureKartDb.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -235,10 +247,13 @@
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Shared\_Registration.cshtml" />
     <Content Include="Views\Shared\_Login.cshtml" />
+    <Content Include="Views\Kart\Index.cshtml" />
+    <Content Include="Views\Payment\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Views\Register\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
