@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'E:\V I K A S H\WodFurnitureKart.Web\Models\WooFurnitureKartDb.edmx'. 
+﻿// T4 code generation is enabled for model 'D:\V I K A S H\WodFurnitureKart.Web\Models\WooFurnitureKartDb.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

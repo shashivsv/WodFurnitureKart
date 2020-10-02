@@ -8,6 +8,10 @@
         <EntityTypeShape EntityType="WooFurnitureKartDb.tblPage" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WooFurnitureKartDb.tblRole" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WooFurnitureKartDb.tblUser" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WooFurnitureKartDb.tblCategory" Width="1.5" PointX="3.375" PointY="3.75" />
+        <EntityTypeShape EntityType="WooFurnitureKartDb.tblManufacturer" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="WooFurnitureKartDb.tblProduct" Width="1.5" PointX="5.375" PointY="3.75" />
+        <EntityTypeShape EntityType="WooFurnitureKartDb.tblSubCategory" Width="1.5" PointX="7.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -28,5 +28,9 @@ namespace WodFurnitureKart.Web.Models
         public virtual DbSet<tblPage> tblPages { get; set; }
         public virtual DbSet<tblRole> tblRoles { get; set; }
         public virtual DbSet<tblUser> tblUsers { get; set; }
+        public virtual DbSet<tblCategory> tblCategories { get; set; }
+        public virtual DbSet<tblManufacturer> tblManufacturers { get; set; }
+        public virtual DbSet<tblProduct> tblProducts { get; set; }
+        public virtual DbSet<tblSubCategory> tblSubCategories { get; set; }
     }
 }
