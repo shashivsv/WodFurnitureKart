@@ -1,3 +1,0 @@
-E:\V I K A S H\JWTAuthenticate\obj\Debug\JWTAuthenticate.csprojResolveAssemblyReference.cache
-D:\V I K A S H\JWTAuthenticate\obj\Debug\JWTAuthenticate.csprojAssemblyReference.cache
-D:\V I K A S H\JWTAuthenticate\obj\Debug\JWTAuthenticate.csproj.CoreCompileInputs.cache
